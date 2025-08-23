@@ -1,1 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Livestock Hub</div>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><button onclick="showPage('home')" id="home-btn" class="active">Home</button></li>
+                    <li><button onclick="handleSellClick()" id="sell-btn"><span>Sell Livestock</span></button></li>
+                    <li><button onclick="showPage('browse')" id="browse-btn">Browse Listings</button></li>
+                </ul>
+                <div class="user-status" id="user-status">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <span id="user-name">User</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </nav>
+    </header>
 
+    <main>
+        <!-- Login/Signup Modal -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="auth-container">
+                    <div class="auth-tabs">
+                        <button type="button" class="auth-tab active" data-tab="login">Login</button>
+                        <button type="button" class="auth-tab" data-tab="signup">Sign Up</button>
+                    </div>
+                    
+                    <form id="login-form" class="auth-form active">
+                        <h2>Welcome Back!</h2>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" required>
+                        </div>
+                        <button type="submit" class="auth-btn">Login</button>
+                    </form>
+                    
+                    <form id="signup-form" class="auth-form">
+                        <h2>Create Account</h2>
+                        <div class="form-group">
+                            <input type="text" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Confirm Password" required>
+                        </div>
+                        <button type="submit" class="auth-btn">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="welcome-section">
+                <h1>Welcome to Livestock Hub</h1>
+                <p>Connect livestock sellers with buyers in a trusted marketplace. List your animals for sale or browse quality livestock from verified sellers across South Africa. Support your favorite listings by rooting for them!</p>
+            </div>
+        </div>
+
+        <!-- Sell Livestock Page -->
+        <div id="sell" class="page">
+            <div class="form-container">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #2c5530;">List Your Livestock</h2>
+                <form id="livestock-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="animal-name">Animal Name</label>
+                            <input type="text" id="animal-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="animal-type">Type</label>
+                            <select id="animal-type" required>
+                                <option value="">Select type...</option>
+                                <option value="cow">Cow</option>
+                                <option value="goat">Goat</option>
+                                <option value="sheep">Sheep</option>
+                                <option value="pig">Pig</option>
+                                <option value="horse">Horse</option>
+                                <option value="chicken">Chicken</option>
+                                <option value="duck">Duck</option>
+                                <option value="rabbit">Rabbit</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="animal-age">Age (in years)</label>
+                            <input type="number" id="animal-age" min="0" step="0.1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="animal-price">Price (R)</label>
+                            <input type="number" id="animal-price" min="0" step="0.01" required placeholder="0.00">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="seller-name">Seller Name</label>
+                            <input type="text" id="seller-name" required placeholder="Your name or farm name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="seller-phone">Contact Number</label>
+                            <input type="tel" id="seller-phone" required placeholder="e.g., 083 123 4567">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="province">Province</label>
+                            <select id="province" required onchange="updateAreas()">
+                                <option value="">Select province...</option>
+                                <option value="gauteng">Gauteng</option>
+                                <option value="western-cape">Western Cape</option>
+                                <option value="kwazulu-natal">KwaZulu-Natal</option>
+                                <option value="eastern-cape">Eastern Cape</option>
+                                <option value="free-state">Free State</option>
+                                <option value="limpopo">Limpopo</option>
+                                <option value="mpumalanga">Mpumalanga</option>
+                                <option value="north-west">North West</option>
+                                <option value="northern-cape">Northern Cape</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="area">Area</label>
+                            <select id="area" required disabled>
+                                <option value="">Select area...</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animal-description">Description</label>
+                        <textarea id="animal-description" placeholder="Tell us about your animal..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="animal-image">Image URL</label>
+                        <input type="url" id="animal-image" placeholder="https://example.com/image.jpg">
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">List My Livestock</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Browse Listings Page -->
+        <div id="browse" class="page">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #2c5530;">Browse Livestock</h2>
+            
+            <div class="filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="type-filter">Filter by type:</label>
+                        <select id="type-filter" onchange="filterListings()">
+                            <option value="">All Types</option>
+                            <option value="cow">Cow</option>
+                            <option value="goat">Goat</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="pig">Pig</option>
+                            <option value="horse">Horse</option>
+                            <option value="chicken">Chicken</option>
+                            <option value="duck">Duck</option>
+                            <option value="rabbit">Rabbit</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="province-filter">Filter by province:</label>
+                        <select id="province-filter" onchange="updateAreaFilter()">
+                            <option value="">All Provinces</option>
+                            <option value="gauteng">Gauteng</option>
+                            <option value="western-cape">Western Cape</option>
+                            <option value="kwazulu-natal">KwaZulu-Natal</option>
+                            <option value="eastern-cape">Eastern Cape</option>
+                            <option value="free-state">Free State</option>
+                            <option value="limpopo">Limpopo</option>
+                            <option value="mpumalanga">Mpumalanga</option>
+                            <option value="north-west">North West</option>
+                            <option value="northern-cape">Northern Cape</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="area-filter">Filter by area:</label>
+                        <select id="area-filter" onchange="filterListings()" disabled>
+                            <option value="">All Areas</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="price-min">Min price (R):</label>
+                        <input type="number" id="price-min" min="0" step="0.01" placeholder="0.00" onchange="filterListings()">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="price-max">Max price (R):</label>
+                        <input type="number" id="price-max" min="0" step="0.01" placeholder="No limit" onchange="filterListings()">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sort-filter">Sort by:</label>
+                        <select id="sort-filter" onchange="sortListings()">
+                            <option value="newest">Newest First</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="roots">Most Rooted</option>
+                            <option value="name">Name (A-Z)</option>
+                            <option value="age">Age (Youngest)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="listings-container" class="listings-grid"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
