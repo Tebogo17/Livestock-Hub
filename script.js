@@ -517,3 +517,61 @@ document.addEventListener('DOMContentLoaded', function() {
     
     applyFiltersAndSort();
 });
+
+// Slideshow functionality
+let slideIndex = 0;
+let slideTimer;
+
+// Show slides
+function showSlides(n) {
+    const slides = document.getElementsByClassName("slide");
+    const dots = document.getElementsByClassName("dot");
+
+    if (n > slides.length) { slideIndex = 1 }
+    if (n < 1) { slideIndex = slides.length }
+
+    // Hide all slides
+    for (let i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    // Remove active class from all dots
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].classList.remove("active-dot");
+    }
+
+    // Show current slide + highlight dot
+    slides[slideIndex - 1].style.display = "block";
+    if (dots.length > 0) {
+        dots[slideIndex - 1].classList.add("active-dot");
+    }
+}
+
+// Next/Prev controls
+function changeSlide(n) {
+    clearTimeout(slideTimer);
+    showSlides(slideIndex += n);
+    autoSlides();
+}
+
+// Dot controls
+function setSlide(n) {
+    clearTimeout(slideTimer);
+    showSlides(slideIndex = n);
+    autoSlides();
+}
+
+// Auto-play function
+function autoSlides() {
+    const slides = document.getElementsByClassName("slide");
+    slideIndex++;
+    if (slideIndex > slides.length) { slideIndex = 1 }
+    showSlides(slideIndex);
+    slideTimer = setTimeout(autoSlides, 4000); // Change every 4s
+}
+
+// Initialize slideshow
+document.addEventListener("DOMContentLoaded", () => {
+    slideIndex = 0;
+    autoSlides();
+});
+
